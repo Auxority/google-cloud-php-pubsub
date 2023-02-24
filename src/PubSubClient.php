@@ -132,6 +132,9 @@ class PubSubClient
      *     @type string $keyFilePath The full path to your service account
      *           credentials .json file retrieved from the Google Developers
      *           Console.
+     *     @type string $emulatorHost The host used for the Pub/Sub emulator
+     *           that can be used to test push subscriptions in development.
+     *           Example: 'localhost:8900'
      *     @type float $requestTimeout Seconds to wait before timing out the
      *           request. **Defaults to** `0` with REST and `60` with gRPC.
      *     @type int $retries Number of retries for a failed request.
@@ -149,7 +152,7 @@ class PubSubClient
     {
         $this->clientConfig = $config;
         $connectionType = $this->getConnectionType($config);
-        $emulatorHost = getenv('PUBSUB_EMULATOR_HOST');
+        $emulatorHost = $config['emulatorHost'] ?: getenv('PUBSUB_EMULATOR_HOST');
         $config += [
             'scopes' => [self::FULL_CONTROL_SCOPE],
             'projectIdRequired' => true,
